@@ -1,0 +1,14 @@
+# Dependencias
+/.venv
+# Caché de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd 
+# Configuración
+.devdbrc
+# Extra
+index.html
+CajaMaestra.md
+# Base de datos sqlite
+cajamaestra.db
