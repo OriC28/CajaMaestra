@@ -7,11 +7,12 @@ from PyQt6 import QtWidgets
 
 
 if __name__ == '__main__':
+    import multiprocessing
+    multiprocessing.freeze_support()
+
     # Iniciar servidor FastAPI en hilo separado
     api_thread = threading.Thread(target=run_fastapi, daemon=True)
     api_thread.start()
-
-    time.sleep(2)
 
     app = QtWidgets.QApplication([])
     window = MainWindow()

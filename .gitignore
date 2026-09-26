@@ -7,8 +7,8 @@ __pycache__/
 *.pyd 
 # Configuración
 .devdbrc
-# Extra
-index.html
-CajaMaestra.md
 # Base de datos sqlite
 cajamaestra.db
+# Pyinstaller
+/build
+/dist

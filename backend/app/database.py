@@ -4,16 +4,18 @@ import os
 import sys
 import shutil
 
-# Función para obtener la ruta correcta en PyInstaller
+
 def get_resource_path(relative_path):
+    """Función para obtener la ruta correcta en PyInstaller."""
     try:
         base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
 
-# Función para obtener la ruta de datos de la aplicación
+
 def get_app_data_path():
+    """Función para obtener la ruta de datos de la aplicación."""
     if sys.platform == "win32":
         base = os.environ.get("APPDATA", os.path.expanduser("~"))
     else:
@@ -22,12 +24,13 @@ def get_app_data_path():
     os.makedirs(app_data, exist_ok=True)
     return app_data
 
+
 # Ruta de la base de datos en AppData para persistencia
 DATABASE_PATH = os.path.join(get_app_data_path(), 'cajamaestra.db')
 
-# Si la base de datos no existe en AppData, copiar la plantilla
-if not os.path.exists(DATABASE_PATH):
-    template_db = get_resource_path('backend/cajamaestra.db')
+# Si la base de datos no existe o está vacía en AppData, copiar la plantilla
+if not os.path.exists(DATABASE_PATH) or os.path.getsize(DATABASE_PATH) == 0:
+    template_db = get_resource_path('backend/backup/cajamaestra.example.db')
     if os.path.exists(template_db):
         shutil.copy(template_db, DATABASE_PATH)
 

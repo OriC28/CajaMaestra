@@ -2,11 +2,15 @@ from backend.app.schemas import SaleCreate, RateCreate
 import uvicorn
 
 from backend.app.crud import *
+from backend.app.database import create_db_and_tables
+from backend.app import models  # noqa: F401
 
 from fastapi import FastAPI, APIRouter, HTTPException
 
 app = FastAPI()
 
+# Crear las tablas si no existen
+create_db_and_tables()
 
 router = APIRouter(responses={404: {"message": "No encontrado."}})
 
@@ -74,13 +78,18 @@ app.include_router(router)
 def run_fastapi():
     """Ejecuta el servidor FastAPI en un hilo separado."""
     import logging
-    logging.getLogger("uvicorn").setLevel(logging.ERROR)
-    config = uvicorn.Config(
-        app, 
-        host="127.0.0.1", 
-        port=8000, 
-        log_level="error",
-        access_log=False
-    )
-    server = uvicorn.Server(config)
-    server.run()
+    try:
+        logging.getLogger("uvicorn").setLevel(logging.ERROR)
+        config = uvicorn.Config(
+            app,
+            host="127.0.0.1",
+            port=8000,
+            log_level="error",
+            access_log=False,
+            workers=1,
+            reload=False
+        )
+        server = uvicorn.Server(config)
+        server.run()
+    except Exception as e:
+        print(f"Error fatal al iniciar el backend (FastAPI): {e}", flush=True)

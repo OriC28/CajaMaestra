@@ -11,15 +11,12 @@ from backend.app.database import session
 def create_daily_rate_in_db(rate: float):
     today = datetime.now().date()
 
-    # Search a rate with current date
     daily_rate = session.query(DailyRate).filter(
         func.date(DailyRate.date) == today).first()
 
-    # If exists update rate
     if daily_rate:
         daily_rate.rate = rate
 
-    # Add new rate with current date
     else:
         daily_rate = DailyRate(date=datetime.now(), rate=rate)
         session.add(daily_rate)
@@ -78,7 +75,6 @@ def create_complete_sale_in_db(sale_create: SaleCreate, rate_object: DailyRate):
         return sale
 
     except Exception as e:
-        # 9. Si algo falla, revertir todo
         session.rollback()
         raise e
 
@@ -152,24 +148,18 @@ def get_history_from_db() -> list[History]:
 
     statement = (
         select(
-            # Requisito 1: fecha de la venta (general)
             func.date(SaleOuter.date_hour).label('date'),
 
-            # Requisito 2: fecha de la primera venta realizada en el día
             coalesce(func.min(SaleOuter.date_hour),
                      datetime.now()).label('first_sale_date'),
 
-            # Requisito 3: fecha de la última venta del día
             coalesce(func.max(SaleOuter.date_hour),
                      datetime.now()).label('last_sale_date'),
 
-            # Requisito 4: total de ventas realizadas en el día (cantidad)
             func.count(SaleOuter.id).label('total_sales'),
 
-            # Requisito 5: monto total de ventas del día
             coalesce(func.sum(SaleOuter.total_usd), 0.0).label('total_amount'),
 
-            # Requisito 6: última tasa de cambio utilizada en el día
             coalesce(subquery_rate, 0.0).label('last_rate_used')
         )
         .group_by(func.date(SaleOuter.date_hour))

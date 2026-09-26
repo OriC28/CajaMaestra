@@ -112,7 +112,6 @@ class ReportDialog(QtWidgets.QDialog):
         y += line_spacing + 2
 
         for label, value in items:
-            # label
             bbox_label = font.getbbox(label) if hasattr(
                 font, 'getbbox') else font.getsize(label)
             label_w = bbox_label[2] - bbox_label[0] if isinstance(
