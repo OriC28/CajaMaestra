@@ -2,6 +2,24 @@
 
 CajaMaestra is a desktop Point of Sale (POS) and daily sales management application. It utilizes a standalone architecture where a local FastAPI backend and a PyQt6 graphical interface run simultaneously within the same process.
 
+## Screenshots
+
+### 1. Exchange Rate Configuration
+![Exchange Rate Configuration](img/screenshots/rate_config.png)
+*Initial setup of the daily exchange rate before processing sales.*
+
+### 2. Main Dashboard
+![Main Dashboard](img/screenshots/main_dashboard.jpg)
+*Main POS interface for calculating and processing payments.*
+
+### 3. Sales History
+![Sales History](img/screenshots/sales_history.jpg)
+*Reviewing the history of processed sales for the current day.*
+
+### 4. Daily Closing Report
+![Closing Report](img/screenshots/closing_report.png)
+*Generating the daily cash register closing report with payment method breakdowns.*
+
 ## Features
 
 * Daily exchange rate management.
